@@ -1,0 +1,34 @@
+{
+  "listen": {"host": "127.0.0.1", "port": 8787},
+  "db_path": "~/.tollgate/calls.db",
+  "providers": {
+    "openai": {"base_url": "https://api.openai.com/v1", "api_key": "sk-REPLACE-ME"},
+    "glm": {"base_url": "https://open.bigmodel.cn/api/paas/v4", "api_key": "REPLACE-ME"},
+    "deepseek": {"base_url": "https://api.deepseek.com/v1", "api_key": "REPLACE-ME"},
+    "ollama": {"base_url": "http://localhost:11434/v1", "api_key": "ollama"}
+  },
+  "provider_order": ["openai", "glm", "deepseek", "ollama"],
+  "routes": {
+    "gpt-4o-mini": [
+      {"provider": "openai", "model": "gpt-4o-mini"},
+      {"provider": "glm", "model": "glm-4-flash"},
+      {"provider": "deepseek", "model": "deepseek-chat"}
+    ],
+    "glm-4-flash": [
+      {"provider": "glm", "model": "glm-4-flash"},
+      {"provider": "deepseek", "model": "deepseek-chat"}
+    ],
+    "default": [{"provider": "glm", "model": "glm-4-flash"}]
+  },
+  "budgets": {
+    "global": {"daily_usd": 10.0, "mode": "alert"},
+    "tags": {
+      "my-project": {"daily_usd": 1.0, "mode": "cutoff"},
+      "experiments": {"daily_usd": 0.5, "mode": "cutoff"}
+    }
+  },
+  "retry": {"max_attempts": 3, "backoff_base": 0.5},
+  "request_timeout": 120,
+  "pricing_overrides": {},
+  "local_token": ""
+}
